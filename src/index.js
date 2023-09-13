@@ -58,9 +58,18 @@ function renderGallery(images) {
   gallery.innerHTML += galleryHTML;
 }
 
+let isLoading = false;
 async function loadMoreImages() {
-  currentPage += 1; 
-  loadImagesAndRender(currentQuery, currentPage);
+    if (isLoading) return;
+    isLoading = true;
+    currentPage += 1;
+    try {
+        await loadImagesAndRender(currentQuery, currentPage);
+    } catch (error) {
+        console.error('Error fetching more images:', error);
+    } finally {
+        isLoading = false;
+    }
 }
 
 
